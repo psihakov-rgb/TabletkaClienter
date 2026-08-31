@@ -23,6 +23,7 @@ import rich.events.api.types.EventType;
 import rich.events.impl.PacketEvent;
 import rich.events.impl.UsingItemEvent;
 import rich.modules.impl.combat.Aura;
+import rich.modules.impl.combat.SpookyBypass;
 import rich.modules.impl.combat.TriggerBot;
 import rich.modules.impl.combat.aura.AngleConnection;
 import rich.modules.impl.combat.aura.target.RaycastAngle;
@@ -260,7 +261,22 @@ public class StrikeManager implements IMinecraft {
             return;
         }
 
+        // SpookyBypass: проверяем задержки и антифлаг ПЕРЕД атакой
+        SpookyBypass spookyBypass = SpookyBypass.getInstance();
+        boolean spookyActive = spookyBypass != null && spookyBypass.isState();
+
+        if (spookyActive && !spookyBypass.canAttackNow()) {
+            return;
+        }
+
         preAttackEntity(config);
+
+        if (spookyActive) {
+            // SpookyBypass берёт на себя управление спринтом и порядком пакетов
+            spookyBypass.prepareAttack();
+            executeAttack(config);
+            return;
+        }
 
         boolean wasSprinting = mc.player.isSprinting();
         boolean shouldReset = wasSprinting && shouldResetSprintForCrit();

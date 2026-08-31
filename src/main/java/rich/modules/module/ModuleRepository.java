@@ -26,6 +26,7 @@ public class ModuleRepository {
         builder()
                 .add(new Hud())
                 .add(new Aura())
+                .add(new SpookyBypass())
                 .add(new HitEffect())
                 .add(new Esp())
                 .add(new BlockESP())

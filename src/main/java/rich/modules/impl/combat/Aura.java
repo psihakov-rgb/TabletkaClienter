@@ -43,7 +43,7 @@ public class Aura extends ModuleStructure {
     }
 
     private final SelectSetting mode = new SelectSetting("Режим наводки", "Select aim mode")
-            .value("Matrix", "FunTime Snap", "Snap", "SpookyTime")
+            .value("Matrix", "FunTime Snap", "Snap", "SpookyTime", "Grim")
             .selected("Matrix");
 
     private final SelectSetting moveFix = new SelectSetting("Коррекция движения", "Select move fix mode")
@@ -225,7 +225,7 @@ public class Aura extends ModuleStructure {
                 }
             }
 
-            case "Matrix", "SpookyTime" -> {
+            case "Matrix", "SpookyTime", "Grim" -> {
                 controller.rotateTo(rotation, target, 1, rotationConfig, TaskPriority.HIGH_IMPORTANCE_1, this);
             }
 
@@ -389,6 +389,7 @@ public class Aura extends ModuleStructure {
             case "SpookyTime" -> new SPAngle();
             case "Snap" -> new SnapAngle();
             case "Matrix" -> new MatrixAngle();
+            case "Grim" -> new GrimAngle();
             default -> new LinearConstructor();
         };
     }
